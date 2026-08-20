@@ -1,0 +1,19 @@
+{
+  "name": "cuda-programming-guide-zh",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CUDA Programming Guide Release 13.3 的中文导读与图解 VuePress 站点",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "docs:clean-dev": "vuepress dev docs --clean-cache",
+    "docs:clean-build": "vuepress build docs --clean-cache"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "^2.0.0",
+    "@vuepress/plugin-search": "^2.0.0",
+    "@vuepress/theme-default": "^2.0.0",
+    "vuepress": "^2.0.0"
+  }
+}
