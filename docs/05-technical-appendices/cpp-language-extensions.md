@@ -4613,15 +4613,9 @@ Note
 
  已弃用对 MMA 指令的以下变体的支持，并将在sm_90:
 
->
->
 > - `experimental::precision::u4`
->
 > - `experimental::precision::s4`
->
 > - `experimental::precision::b1`，其中 `bmmaBitOp` 设置为 `bmmaBitOpXOR`
->
->
 
 
 
