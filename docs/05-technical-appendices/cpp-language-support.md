@@ -4081,23 +4081,23 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
 
   >
   >
-  > ```cuda
-  >
-  >
-  >     constexpr __device__             int  device_func() { return 0; }
-  >     constexpr __tile__               int  tile_func()   { return 0; }
-  >
-  >     constexpr __device__ __host___   int host_device_func() { return 0; }
-  >
-  >     int main() {
-  >         constexpr int x1 = device_func(); // UB: calling a __device__-only constexpr function from host code
-  >         constexpr int x2 = tile_func();   // UB: calling a __tile__-only constexpr function from host code
-  >         constexpr int x3 = host_device_func(); // OK
-  >
-  >     }
-  >
-  >
-  > ```
+> ```cuda
+>
+>
+> constexpr __device__             int  device_func() { return 0; }
+> constexpr __tile__               int  tile_func()   { return 0; }
+>
+> constexpr __device__ __host___   int host_device_func() { return 0; }
+>
+> int main() {
+> constexpr int x1 = device_func(); // UB: calling a __device__-only constexpr function from host code
+> constexpr int x2 = tile_func();   // UB: calling a __tile__-only constexpr function from host code
+> constexpr int x3 = host_device_func(); // OK
+>
+> }
+>
+>
+> ```
   >
   >
 
@@ -4105,18 +4105,18 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
 
   >
   >
-  > ```cuda
-  >
-  >
-  >     constexpr  int host_func() { return 0; }
-  >
-  >     __device__ void dmain()
-  >     {
-  >         int x = host_func();  // UB: calling a host-only constexpr function from device code
-  >     }
-  >
-  >
-  > ```
+> ```cuda
+>
+>
+> constexpr  int host_func() { return 0; }
+>
+> __device__ void dmain()
+> {
+> int x = host_func();  // UB: calling a host-only constexpr function from device code
+> }
+>
+>
+> ```
   >
   >
 
@@ -4124,18 +4124,18 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
 
   >
   >
-  > ```cuda
-  >
-  >
-  >     constexpr  int host_func() { return 0; }
-  >
-  >     __tile__ void dmain()
-  >     {
-  >         int x = host_func();  // UB: calling a host-only constexpr function from tile code
-  >     }
-  >
-  >
-  > ```
+> ```cuda
+>
+>
+> constexpr  int host_func() { return 0; }
+>
+> __tile__ void dmain()
+> {
+> int x = host_func();  // UB: calling a host-only constexpr function from tile code
+> }
+>
+>
+> ```
   >
   >
 
@@ -4151,33 +4151,33 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
 
     >
     >
-    > ```cuda
-    >
-    >
-    >     constexpr __host__ int host_func(int x) { return x + 1; };
-    >
-    >     __global__ void doit() {
-    >          constexpr int val = host_func(1); // OK: call is in a context that
-    >                                            // requires constant evaluation.
-    >     }
-    >
-    >     __tile_global__ void tile_doit() {
-    >          constexpr int val = host_func(1); // OK: call is in a context that
-    >                                            // requires constant evaluation.
-    >     }
-    >
-    >
-    >     constexpr __device__ int device_func(int x) { return x + 1; }
-    >
-    >     constexpr __tile__ int tile_func(int x) { return x + 2; }
-    >
-    >     int main() {
-    >     constexpr int val = device_func(1) + tile_func(1); // OK: call is in a context that
-    >                                                        // requires constant evaluation.
-    >     }
-    >
-    >
-    > ```
+> ```cuda
+>
+>
+> constexpr __host__ int host_func(int x) { return x + 1; };
+>
+> __global__ void doit() {
+> constexpr int val = host_func(1); // OK: call is in a context that
+> // requires constant evaluation.
+> }
+>
+> __tile_global__ void tile_doit() {
+> constexpr int val = host_func(1); // OK: call is in a context that
+> // requires constant evaluation.
+> }
+>
+>
+> constexpr __device__ int device_func(int x) { return x + 1; }
+>
+> constexpr __tile__ int tile_func(int x) { return x + 2; }
+>
+> int main() {
+> constexpr int val = device_func(1) + tile_func(1); // OK: call is in a context that
+> // requires constant evaluation.
+> }
+>
+>
+> ```
     >
     >
 
@@ -4189,20 +4189,20 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
     >
     >     >
     >     >
-    >     > ```cuda
-    >     >
-    >     >
-    >     >     constexpr __host__ int host_func(int x) { return x + 1; }
-    >     >
-    >     >     __tile__ int doit(int in) {
-    >     >         in = host_func(in); // UB: call occurs outside of a context that requires
-    >     >                             // constant evaluation.
-    >     >         constexpr int other = host_func(10); // OK with -expt-relaxed-constexpr:
-    >     >                                              // call is  required to be evaluated at compile time
-    >     >     }
-    >     >
-    >     >
-    >     > ```
+> ```cuda
+>
+>
+> constexpr __host__ int host_func(int x) { return x + 1; }
+>
+> __tile__ int doit(int in) {
+> in = host_func(in); // UB: call occurs outside of a context that requires
+> // constant evaluation.
+> constexpr int other = host_func(10); // OK with -expt-relaxed-constexpr:
+> // call is  required to be evaluated at compile time
+> }
+>
+>
+> ```
     >     >
     >     >
     >
@@ -4210,20 +4210,20 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
     >
     >     >
     >     >
-    >     > ```cuda
-    >     >
-    >     >
-    >     >     // NOTE: "host_func" is emitted in generated device code because it is
-    >     >     // called from device code in a non-constexpr context
-    >     >     constexpr __host__ int host_func(int x) { return x + 1; }
-    >     >
-    >     >     __device__ int doit(int in) {
-    >     >         in = host_func(in);  // OK, even though argument is not a constant expression
-    >     >         return in;
-    >     >     }
-    >     >
-    >     >
-    >     > ```
+> ```cuda
+>
+>
+> // NOTE: "host_func" is emitted in generated device code because it is
+> // called from device code in a non-constexpr context
+> constexpr __host__ int host_func(int x) { return x + 1; }
+>
+> __device__ int doit(int in) {
+> in = host_func(in);  // OK, even though argument is not a constant expression
+> return in;
+> }
+>
+>
+> ```
     >     >
     >     >
     >
@@ -4237,22 +4237,22 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
     >     >
     >     >   >
     >     >   >
-    >     >   > ```cuda
-    >     >   >
-    >     >   >
-    >     >   >     int host_var1, host_var2;
-    >     >   >
-    >     >   >     constexpr __host__ int* host_func(bool b) { return b ? &host_var1 : &host_var2; };
-    >     >   >
-    >     >   >     __device__ int doit(bool flag) {
-    >     >   >         int *ptr;
-    >     >   >         ptr = host_func(flag); // UB: host_func() attempts to refer to host variables 'host_var1' and 'host_var2'.
-    >     >   >                      // code will compile, but will NOT execute correctly.
-    >     >   >         return *ptr;
-    >     >   >     }
-    >     >   >
-    >     >   >
-    >     >   > ```
+> ```cuda
+>
+>
+> int host_var1, host_var2;
+>
+> constexpr __host__ int* host_func(bool b) { return b ? &host_var1 : &host_var2; };
+>
+> __device__ int doit(bool flag) {
+> int *ptr;
+> ptr = host_func(flag); // UB: host_func() attempts to refer to host variables 'host_var1' and 'host_var2'.
+> // code will compile, but will NOT execute correctly.
+> return *ptr;
+> }
+>
+>
+> ```
     >     >   >
     >     >   >
     >     >
@@ -4260,31 +4260,31 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
     >     >
     >     >   >
     >     >   >
-    >     >   > ```cuda
-    >     >   >
-    >     >   >
-    >     >   >     struct Base { };
-    >     >   >     struct Derived : public Base { };
-    >     >   >
-    >     >   >     // NOTE: "host_func" is emitted in generated device code
-    >     >   >     constexpr int host_func(bool b, Base *ptr) {
-    >     >   >       if (b) {
-    >     >   >         return 1;
-    >     >   >       } else if (typeid(ptr) == typeid(Derived)) { // UB: use of typeid in code executing on the GPU
-    >     >   >         return 2;
-    >     >   >       } else {
-    >     >   >         throw int{4}; // UB: use of throw in code executing on the GPU
-    >     >   >       }
-    >     >   >     }
-    >     >   >
-    >     >   >     __device__ void doit(bool flag) {
-    >     >   >         int val;
-    >     >   >         Derived d;
-    >     >   >         val = host_func(flag, &d); //UB: host_func() attempts use typeid and throw(), which are not allowed in code that executes on the GPU
-    >     >   >     }
-    >     >   >
-    >     >   >
-    >     >   > ```
+> ```cuda
+>
+>
+> struct Base { };
+> struct Derived : public Base { };
+>
+> // NOTE: "host_func" is emitted in generated device code
+> constexpr int host_func(bool b, Base *ptr) {
+> if (b) {
+> return 1;
+> } else if (typeid(ptr) == typeid(Derived)) { // UB: use of typeid in code executing on the GPU
+> return 2;
+> } else {
+> throw int{4}; // UB: use of throw in code executing on the GPU
+> }
+> }
+>
+> __device__ void doit(bool flag) {
+> int val;
+> Derived d;
+> val = host_func(flag, &d); //UB: host_func() attempts use typeid and throw(), which are not allowed in code that executes on the GPU
+> }
+>
+>
+> ```
     >     >   >
     >     >   >
     >     >
@@ -4294,33 +4294,33 @@ A `__global__` 函数不能声明为 `constexpr`。默认情况下，无法从�
     > >
 >> 4. 在主机代码生成期间，`constexpr` 非主机函数 `F` 的主体保留在发送到主机编译器的代码中。如果 `F` 的主体尝试 ODR 使用命名空间作用域设备或 `__tile__` 变量或非主机非 `constexpr` 函数，则不支持从主机代码调用 `F`（代码可能在没有编译器诊断的情况下构建，但在运行时可能表现不正确）。示例：
     > >
-    > >     ```cuda
-    > >
-    > >
-    > >         __device__ int device_var1, device_var2;
-    > >
-    > >         constexpr __device__ int* device_func(bool b) { return b ? &device_var1 : &device_var2; };
-    > >
-    > >         __tile__ int tile_var1, tile_var2;
-    > >
-    > >         constexpr __tile__ int* tile_func(bool b) { return b ? &tile_var1 : &tile_var2; };
-    > >
-    > >         int doit1(bool flag) {
-    > >             int *ptr;
-    > >             ptr = device_func(flag); // UB: device_func() attempts to refer to device variables 'device_var1' and 'device_var2'
-    > >                                      // code will compile, but will NOT execute correctly.
-    > >             return *ptr;
-    > >         }
-    > >
-    > >         int doit2(bool flag) {
-    > >             int *ptr;
-    > >             ptr = tile_func(flag); // UB: tile_func() attempts to refer to __tile__ variables 'tile_var1' and 'tile_var2'
-    > >                                    // code will compile, but will NOT execute correctly.
-    > >             return *ptr;
-    > >         }
-    > >
-    > >
-    > >     ```
+> ```cuda
+>
+>
+> __device__ int device_var1, device_var2;
+>
+> constexpr __device__ int* device_func(bool b) { return b ? &device_var1 : &device_var2; };
+>
+> __tile__ int tile_var1, tile_var2;
+>
+> constexpr __tile__ int* tile_func(bool b) { return b ? &tile_var1 : &tile_var2; };
+>
+> int doit1(bool flag) {
+> int *ptr;
+> ptr = device_func(flag); // UB: device_func() attempts to refer to device variables 'device_var1' and 'device_var2'
+> // code will compile, but will NOT execute correctly.
+> return *ptr;
+> }
+>
+> int doit2(bool flag) {
+> int *ptr;
+> ptr = tile_func(flag); // UB: tile_func() attempts to refer to __tile__ variables 'tile_var1' and 'tile_var2'
+> // code will compile, but will NOT execute correctly.
+> return *ptr;
+> }
+>
+>
+> ```
     > >
     > >
     >
