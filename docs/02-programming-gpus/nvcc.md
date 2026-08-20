@@ -222,7 +222,7 @@ nvcc definition.o example.o -o program
 - `-Xptxas` 将参数传递给 PTX assembler 工具 `ptxas`。`nvcc` 文档提供了 [有用的 `ptxas` 参数列表](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#ptxas-options)。例如，`-Xptxas=-maxrregcount=N` 指定每个线程可以使用的最大寄存器数量。
 - `-extra-device-vectorization`：启用更激进的 device code 向量化。
 - `--apply-controls=/path/to/file`：将高级控制文件（Advanced Controls File，ACF）传给 `nvcc` 和 `ptxas`。该文件会改变默认编译行为，使编译更有针对性地服务于特定工作负载。使用高级控制文件可能导致编译失败或运行时执行错误，请自行承担风险。关于如何生成高级控制文件，请参阅 [CompileIQ GitHub 页面](https://github.com/NVIDIA/CompileIQ)。
-- 提供浮点行为细粒度控制的其他选项，见[浮点计算](../05-technical-appendices/mathematical-functions.html#floating-point-computation)章节和 [`nvcc` 文档](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#use-fast-math-use-fast-math)。
+- 提供浮点行为细粒度控制的其他选项，见[浮点计算](../05-technical-appendices/floating-point-computation.html#floating-point-computation)章节和 [`nvcc` 文档](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#use-fast-math-use-fast-math)。
 
 下面这些选项会输出编译器信息，可用于更高级的代码优化：
 

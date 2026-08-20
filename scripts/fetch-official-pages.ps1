@@ -41,6 +41,15 @@ $pages = [ordered]@{
   '04-special-topics/dynamic-parallelism.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/dynamic-parallelism.html'
   '04-special-topics/graphics-interop.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/graphics-interop.html'
   '04-special-topics/driver-entry-point-access.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/driver-entry-point-access.html'
+  '05-appendices/compute-capabilities.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/compute-capabilities.html'
+  '05-appendices/environment-variables.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/environment-variables.html'
+  '05-appendices/cpp-language-support.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/cpp-language-support.html'
+  '05-appendices/cpp-language-extensions.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/cpp-language-extensions.html'
+  '05-appendices/mathematical-functions.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/mathematical-functions.html'
+  '05-appendices/device-callable-apis.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/device-callable-apis.html'
+  '05-appendices/cuda-cpp-memory-model.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/cuda-cpp-memory-model.html'
+  '05-appendices/cuda-cpp-execution-model.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/cuda-cpp-execution-model.html'
+  'notices.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/notices.html'
 }
 
 foreach ($page in $pages.GetEnumerator()) {

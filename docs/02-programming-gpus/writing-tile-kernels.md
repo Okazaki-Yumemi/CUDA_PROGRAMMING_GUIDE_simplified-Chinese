@@ -5,7 +5,7 @@ description: 完整翻译 NVIDIA CUDA Programming Guide 第 2.4 节 CUDA Tile ke
 
 # 2.4 编写 Tile Kernel（Writing Tile Kernels）
 
-CUDA Tile 提供了一种不同于前面章节所介绍的单指令多线程（SIMT）模型的 GPU kernel 编写方式。Tile 编程允许程序员以不同方式表达并行性，并将最低层次的并行性留给编译器和内置操作。这样，tile 就提供了一种更简单的方式，用于访问 NVIDIA GPU 的新近性能特性，例如 [Tensor Memory Accelerator（TMA）](../04-cuda-features/async-copies.html#async-copies-tma-multi-dim)单元和 tensor core。
+CUDA Tile 提供了一种不同于前面章节所介绍的单指令多线程（SIMT）模型的 GPU kernel 编写方式。Tile 编程允许程序员以不同方式表达并行性，并将最低层次的并行性留给编译器和内置操作。这样，tile 就提供了一种更简单的方式，用于访问 NVIDIA GPU 的新近性能特性，例如 [Tensor Memory Accelerator（TMA）](../04-cuda-features/asynchronous-data-copies.html#_4-11-2-2-使用-tma-传输多维数组-using-tma-to-transfer-multi-dimensional-arrays)单元和 tensor core。
 
 - CUDA Tile 编程可以通过 cuTile Python package `cuda.tile` 使用。
 - 从 CUDA Toolkit 13.3 开始，可以使用 CUDA Tile C++。

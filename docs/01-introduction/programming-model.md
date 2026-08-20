@@ -163,7 +163,7 @@ CUDA 提供了分配 GPU 内存、CPU 内存以及在 CPU 与 GPU 之间、GPU �
 
 寄存器文件存储线程局部变量，这些变量通常由编译器分配。shared memory 可以被 thread block 或 cluster 中的所有线程访问，可用于在 thread block 或 cluster 的线程之间交换数据。
 
-SM 中的寄存器文件和统一数据缓存容量有限。SM 的寄存器文件、统一数据缓存的大小，以及统一数据缓存如何配置 L1 与 shared memory 的比例，可以在 [Memory Information per Compute Capability](https://docs.nvidia.com/cuda/cuda-programming-guide/05-technical-appendices/compute-capabilities.html) 中查到。寄存器文件、shared memory 空间和 L1 cache 由 thread block 中的所有线程共享。
+SM 中的寄存器文件和统一数据缓存容量有限。SM 的寄存器文件、统一数据缓存的大小，以及统一数据缓存如何配置 L1 与 shared memory 的比例，可以在 [Memory Information per Compute Capability](../05-technical-appendices/compute-capabilities.html) 中查到。寄存器文件、shared memory 空间和 L1 cache 由 thread block 中的所有线程共享。
 
 要把一个 thread block 调度到 SM 上，该 block 所需的每线程寄存器数量乘以 block 中的线程数量，必须小于或等于 SM 中可用的寄存器数量。如果一个 thread block 所需的寄存器数超过寄存器文件容量，kernel 就无法启动；必须减少 thread block 中的线程数量，才能使该 block 可以启动。
 
