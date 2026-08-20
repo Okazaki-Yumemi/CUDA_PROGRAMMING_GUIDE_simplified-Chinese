@@ -2155,46 +2155,46 @@ The `nvcc` 标志 `--extended-lambda` 允许在 lambda 表达式中显式注释�
 
 1. 扩展 lambda 不能在另一个扩展 lambda 表达式内定义。例子：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            auto lambda1 = [] __host__ __device__  {
-                 // ERROR, extended lambda defined within another extended lambda
-                auto lambda2 = [] __host__ __device__ { };
-            };
-        }
+    void host_function() {
+        auto lambda1 = [] __host__ __device__  {
+             // ERROR, extended lambda defined within another extended lambda
+            auto lambda2 = [] __host__ __device__ { };
+        };
+    }
 
 
-    ```
+```
 
 2. 扩展 lambda 不能在通用 lambda 表达式内定义。示例：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            auto lambda1 = [] (auto) {
-                 // ERROR, extended lambda defined within a generic lambda
-                auto lambda2 = [] __host__ __device__ { };
-            };
-        }
+    void host_function() {
+        auto lambda1 = [] (auto) {
+             // ERROR, extended lambda defined within a generic lambda
+            auto lambda2 = [] __host__ __device__ { };
+        };
+    }
 
 
-    ```
+```
 
 3. 如果扩展 lambda 是在一个或多个嵌套 lambda 表达式的直接或嵌套块作用域内定义的，则最外层 lambda 表达式必须在函数的直接或嵌套块作用域内定义。示例：
 
-    ```cuda
+```cuda
 
 
-        auto lambda1 = []  {
-            // ERROR, outer enclosing lambda is not defined within a non-lambda-operator() function
-            auto lambda2 = [] __host__ __device__ { };
-        };
+    auto lambda1 = []  {
+        // ERROR, outer enclosing lambda is not defined within a non-lambda-operator() function
+        auto lambda2 = [] __host__ __device__ { };
+    };
 
 
-    ```
+```
 
 4. 扩展 lambda 的封闭函数必须命名，并且其地址必须可访问。如果封闭函数是类成员，则必须满足以下条件:
 
@@ -2206,118 +2206,118 @@ The `nvcc` 标志 `--extended-lambda` 允许在 lambda 表达式中显式注释�
 
 示例：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            auto lambda1 = [] __device__ { return 0; }; // OK
-            {
-                auto lambda2 = [] __device__          { return 0; }; // OK
-                auto lambda3 = [] __device__ __host__ { return 0; }; // OK
-            }
+    void host_function() {
+        auto lambda1 = [] __device__ { return 0; }; // OK
+        {
+            auto lambda2 = [] __device__          { return 0; }; // OK
+            auto lambda3 = [] __device__ __host__ { return 0; }; // OK
+        }
+    }
+
+    struct MyStruct1 {
+        MyStruct1() {
+            auto lambda4 = [] __device__ { return 0; }; // ERROR, address of the enclosing function is not accessible
+        }
+    };
+
+    class MyStruct2 {
+        void foo() {
+            auto temp1 = [] __device__ { return 10; }; // ERROR, enclosing function has private access in parent class
         }
 
-        struct MyStruct1 {
-            MyStruct1() {
-                auto lambda4 = [] __device__ { return 0; }; // ERROR, address of the enclosing function is not accessible
-            }
-        };
-
-        class MyStruct2 {
+        struct MyStruct3 {
             void foo() {
-                auto temp1 = [] __device__ { return 10; }; // ERROR, enclosing function has private access in parent class
+                auto temp1 = [] __device__ { return 10; };  // ERROR, enclosing class MyStruct3 has private access in its parent class
             }
-
-            struct MyStruct3 {
-                void foo() {
-                    auto temp1 = [] __device__ { return 10; };  // ERROR, enclosing class MyStruct3 has private access in its parent class
-                }
-            };
         };
+    };
 
 
-    ```
+```
 
 5. 在定义扩展 lambda 时，必须能够明确地获取封闭例程的地址。但是，这可能并不总是可行，例如，当别名声明隐藏同名的模板类型参数时。示例：
 
-    ```cuda
+```cuda
 
 
-        template <typename T>
-        struct A {
-            using Bar = void;
-            void test();
-        };
+    template <typename T>
+    struct A {
+        using Bar = void;
+        void test();
+    };
 
-        template<>
-        struct A<void> { };
+    template<>
+    struct A<void> { };
 
-        template <typename Bar>
-        void A<Bar>::test() {
-            // In code sent to host compiler, nvcc will inject an address expression here, of the form:
-            //   (void (A< Bar> ::*)(void))(&A::test))
-            //  However, the class typedef 'Bar' (to void) shadows the template argument 'Bar',
-            //  causing the address expression in A<int>::test to actually refer to:
-            //    (void (A< void> ::*)(void))(&A::test))
-            //  which doesn't take the address of the enclosing routine 'A<int>::test' correctly.
-            auto lambda1 = [] __host__ __device__ { return 4; };
-        }
+    template <typename Bar>
+    void A<Bar>::test() {
+        // In code sent to host compiler, nvcc will inject an address expression here, of the form:
+        //   (void (A< Bar> ::*)(void))(&A::test))
+        //  However, the class typedef 'Bar' (to void) shadows the template argument 'Bar',
+        //  causing the address expression in A<int>::test to actually refer to:
+        //    (void (A< void> ::*)(void))(&A::test))
+        //  which doesn't take the address of the enclosing routine 'A<int>::test' correctly.
+        auto lambda1 = [] __host__ __device__ { return 4; };
+    }
 
-        int main() {
-            A<int> var;
-            var.test();
-        }
+    int main() {
+        A<int> var;
+        var.test();
+    }
 
 
-    ```
+```
 
 6. 扩展 lambda 不能在函数本地的类中定义。示例：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            struct MyStruct {
-                void bar() {
-                    // ERROR, bar() is member of a class that is local to a function
-                    auto lambda2 = [] __host__ __device__ { return 0; };
-                }
-            };
-        }
+    void host_function() {
+        struct MyStruct {
+            void bar() {
+                // ERROR, bar() is member of a class that is local to a function
+                auto lambda2 = [] __host__ __device__ { return 0; };
+            }
+        };
+    }
 
 
-    ```
+```
 
 7. 扩展 lambda 的封闭函数不能具有推导的返回类型。示例：
 
-    ```cuda
+```cuda
 
 
-        auto host_function() {
-            // ERROR, the return type of host_function() is deduced
-            auto lambda3 = [] __host__ __device__ { return 0; };
-        }
+    auto host_function() {
+        // ERROR, the return type of host_function() is deduced
+        auto lambda3 = [] __host__ __device__ { return 0; };
+    }
 
 
-    ```
+```
 
 8. 主机设备扩展 lambda 不能是通用 lambda，即具有 `auto` 参数类型的 lambda。示例：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            // ERROR, __host__ __device__ extended lambdas cannot be a generic lambda
-            auto lambda1 = [] __host__ __device__ (auto i) { return i; };
+    void host_function() {
+        // ERROR, __host__ __device__ extended lambdas cannot be a generic lambda
+        auto lambda1 = [] __host__ __device__ (auto i) { return i; };
 
-            // ERROR, a host-device extended lambda cannot be a generic lambda
-            auto lambda2 = [] __host__ __device__ (auto... i) {
-                return sizeof...(i);
-            };
-        }
+        // ERROR, a host-device extended lambda cannot be a generic lambda
+        auto lambda2 = [] __host__ __device__ (auto... i) {
+            return sizeof...(i);
+        };
+    }
 
 
-    ```
+```
 
 9. 如果封闭函数是函数或成员模板的实例化，或者函数是类模板的成员，则模板必须满足以下约束：
 
@@ -2329,62 +2329,62 @@ The `nvcc` 标志 `--extended-lambda` 允许在 lambda 表达式中显式注释�
 
  示例 1：
 
-    ```cuda
+```cuda
 
 
-        template <template <typename...> class T,
-                  typename... P1,
-                  typename... P2>
-        void bar1(const T<P1...>, const T<P2...>) {
-            // ERROR, enclosing function has multiple parameter packs
-            auto lambda = [] __device__ { return 10; };
-        }
+    template <template <typename...> class T,
+              typename... P1,
+              typename... P2>
+    void bar1(const T<P1...>, const T<P2...>) {
+        // ERROR, enclosing function has multiple parameter packs
+        auto lambda = [] __device__ { return 10; };
+    }
 
-        template <template <typename...> class T,
-                  typename... P1,
-                  typename    T2>
-        void bar2(const T<P1...>, T2) {
-            // ERROR, for enclosing function, the parameter pack is not last in the template parameter list
-            auto lambda = [] __device__ { return 10; };
-        }
+    template <template <typename...> class T,
+              typename... P1,
+              typename    T2>
+    void bar2(const T<P1...>, T2) {
+        // ERROR, for enclosing function, the parameter pack is not last in the template parameter list
+        auto lambda = [] __device__ { return 10; };
+    }
 
-        template <typename T, T>
-        void bar3() {
-            // ERROR, for enclosing function, the second template parameter is not named
-            auto lambda = [] __device__ { return 10; };
-        }
+    template <typename T, T>
+    void bar3() {
+        // ERROR, for enclosing function, the second template parameter is not named
+        auto lambda = [] __device__ { return 10; };
+    }
 
 
-    ```
+```
 
  示例 2：
 
-    ```cuda
+```cuda
 
 
-        template <typename T>
-        void bar4() {
-            auto lambda1 = [] __device__ { return 10; };
-        }
+    template <typename T>
+    void bar4() {
+        auto lambda1 = [] __device__ { return 10; };
+    }
 
-        class MyStruct {
-            struct MyNestedStruct {};
+    class MyStruct {
+        struct MyNestedStruct {};
 
-            friend int main();
-        };
+        friend int main();
+    };
 
-        int main() {
-            struct MyLocalStruct {};
-            // ERROR, enclosing function for device lambda in bar4() is instantiated with a type local to main
-            bar4<MyLocalStruct>();
+    int main() {
+        struct MyLocalStruct {};
+        // ERROR, enclosing function for device lambda in bar4() is instantiated with a type local to main
+        bar4<MyLocalStruct>();
 
-            // ERROR, enclosing function for device lambda in bar4 is instantiated with a type
-            //        that is a private member of a class
-            bar4<MyStruct::MyNestedStruct>();
-        }
+        // ERROR, enclosing function for device lambda in bar4 is instantiated with a type
+        //        that is a private member of a class
+        bar4<MyStruct::MyNestedStruct>();
+    }
 
 
-    ```
+```
 
 10。对于 Microsoft Visual Studio 主机编译器，封闭函数必须具有外部链接。存在此限制是因为主机编译器不支持使用非外部链接函数的地址作为模板参数。 CUDA 编译器转换要求这些地址支持扩展 lambda。
 
@@ -2412,123 +2412,123 @@ The `nvcc` 标志 `--extended-lambda` 允许在 lambda 表达式中显式注释�
 
  示例：
 
-    ```cuda
+```cuda
 
 
-        void host_function() {
-            // CORRECT, an init-capture is allowed for an extended device-only lambda
-            auto lambda1 = [x = 1] __device__ () { return x; };
+    void host_function() {
+        // CORRECT, an init-capture is allowed for an extended device-only lambda
+        auto lambda1 = [x = 1] __device__ () { return x; };
 
-            // ERROR, an init-capture is not allowed for an extended host-device lambda
-            auto lambda2 = [x = 1] __host__ __device__ () { return x; };
+        // ERROR, an init-capture is not allowed for an extended host-device lambda
+        auto lambda2 = [x = 1] __host__ __device__ () { return x; };
 
-            int a = 1;
-            // ERROR, an extended __device__ lambda cannot capture variables by reference
-            auto lambda3 = [&a] __device__ () { return a; };
+        int a = 1;
+        // ERROR, an extended __device__ lambda cannot capture variables by reference
+        auto lambda3 = [&a] __device__ () { return a; };
 
-            // ERROR, by-reference capture is not allowed for an extended device-only lambda
-            auto lambda4 = [&x = a] __device__ () { return x; };
+        // ERROR, by-reference capture is not allowed for an extended device-only lambda
+        auto lambda4 = [&x = a] __device__ () { return x; };
 
-            struct MyStruct {};
-            MyStruct s1;
-            // ERROR, a type local to a function cannot be used in the type of a captured variable
-            auto lambda6 = [s1] __device__ () { };
+        struct MyStruct {};
+        MyStruct s1;
+        // ERROR, a type local to a function cannot be used in the type of a captured variable
+        auto lambda6 = [s1] __device__ () { };
 
-            // ERROR, an init-capture cannot be of type std::initializer_list
-            auto lambda7 = [x = {11}] __device__ () { };
+        // ERROR, an init-capture cannot be of type std::initializer_list
+        auto lambda7 = [x = {11}] __device__ () { };
 
-            std::initializer_list<int> b = {11,22,33};
-            // ERROR, an init-capture cannot be of type std::initializer_list
-            auto lambda8 = [x = b] __device__ () { };
+        std::initializer_list<int> b = {11,22,33};
+        // ERROR, an init-capture cannot be of type std::initializer_list
+        auto lambda8 = [x = b] __device__ () { };
 
-            int  var     = 4;
-            auto lambda9 = [=] __device__ {
-                int result = 0;
-                if constexpr(false) {
-                    //ERROR, An extended device-only lambda cannot first-capture 'var' in if-constexpr context
-                    result += var;
-                }
-                return result;
-            };
+        int  var     = 4;
+        auto lambda9 = [=] __device__ {
+            int result = 0;
+            if constexpr(false) {
+                //ERROR, An extended device-only lambda cannot first-capture 'var' in if-constexpr context
+                result += var;
+            }
+            return result;
+        };
 
-            auto lambda10 = [var] __device__ {
-                int result = 0;
-                if constexpr(false) {
-                    // CORRECT, 'var' already listed in explicit capture list for the extended lambda
-                    result += var;
-                }
-                return result;
-            };
+        auto lambda10 = [var] __device__ {
+            int result = 0;
+            if constexpr(false) {
+                // CORRECT, 'var' already listed in explicit capture list for the extended lambda
+                result += var;
+            }
+            return result;
+        };
 
-            auto lambda11 = [=] __device__ {
-                int result = var;
-                if constexpr(false) {
-                    // CORRECT, 'var' already implicit captured outside the 'if-constexpr' block
-                    result += var;
-                }
-                return result;
-            };
-        }
+        auto lambda11 = [=] __device__ {
+            int result = var;
+            if constexpr(false) {
+                // CORRECT, 'var' already implicit captured outside the 'if-constexpr' block
+                result += var;
+            }
+            return result;
+        };
+    }
 
 
-    ```
+```
 
 13。解析函数时，CUDA 编译器会为函数中的每个扩展 lambda 分配一个计数器值。此计数器值用在传递给主机编译器的替换命名类型中。因此，函数中是否存在扩展 lambda 不应取决于 `__CUDA_ARCH__` 的特定值，也不应取决于 `__CUDA_ARCH__` 是否未定义。示例：
 
-    ```cuda
+```cuda
 
 
-        template <typename T>
-        __global__ void kernel(T in) { in(); }
+    template <typename T>
+    __global__ void kernel(T in) { in(); }
 
-        __host__ __device__ void host_device_function() {
-            // ERROR, the number and relative declaration order of
-            //        extended lambdas depend on __CUDA_ARCH__
-        #if defined(__CUDA_ARCH__)
-            auto lambda1 = [] __device__ { return 0; };
-            auto lambda2 = [] __host__ __device__ { return 10; };
-        #endif
-            auto lambda3 = [] __device__ { return 4; };
-            kernel<<<1, 1>>>(lambda3);
-        }
+    __host__ __device__ void host_device_function() {
+        // ERROR, the number and relative declaration order of
+        //        extended lambdas depend on __CUDA_ARCH__
+    #if defined(__CUDA_ARCH__)
+        auto lambda1 = [] __device__ { return 0; };
+        auto lambda2 = [] __host__ __device__ { return 10; };
+    #endif
+        auto lambda3 = [] __device__ { return 4; };
+        kernel<<<1, 1>>>(lambda3);
+    }
 
 
-    ```
+```
 
 14。如上所述，CUDA 编译器将主机函数中定义的设备扩展 lambda 替换为命名空间范围中定义的占位符类型。占位符类型不会定义与原始 lambda 声明等效的 `operator()` 函数，除非特征 `__nv_is_extended_device_lambda_with_preserved_return_type()` 返回扩展 lambda 的闭包类型的 `true`。因此，尝试确定此类 lambda 的 `operator()` 函数的返回类型或参数类型可能会在主机代码中无法正常工作，因为主机编译器处理的代码在语义上与 CUDA 编译器处理的输入代码不同。但是，内省返回类型或参数类型`operator()`设备代码中的函数是可以接受的。请注意，此限制不适用于特征 `__nv_is_extended_device_lambda_with_preserved_return_type()` 返回 `true` 的主机或设备扩展 lambda。示例：
 
-    ```cuda
+```cuda
 
 
-        #include <cuda/std/type_traits>
+    #include <cuda/std/type_traits>
 
-        const char& getRef(const char* p) { return *p; }
+    const char& getRef(const char* p) { return *p; }
 
-        void foo() {
-            auto lambda1 = [] __device__ { return "10"; };
+    void foo() {
+        auto lambda1 = [] __device__ { return "10"; };
 
-            // ERROR, attempt to extract the return type of a device lambda in host code
-            cuda::std::result_of<decltype(lambda1)()>::type xx1 = "abc";
+        // ERROR, attempt to extract the return type of a device lambda in host code
+        cuda::std::result_of<decltype(lambda1)()>::type xx1 = "abc";
 
-            auto lambda2 = [] __host__ __device__ { return "10"; };
+        auto lambda2 = [] __host__ __device__ { return "10"; };
 
-            // CORRECT, lambda2 represents a host-device extended lambda
-            cuda::std::result_of<decltype(lambda2)()>::type xx2 = "abc";
+        // CORRECT, lambda2 represents a host-device extended lambda
+        cuda::std::result_of<decltype(lambda2)()>::type xx2 = "abc";
 
-            auto lambda3 = [] __device__ () -> const char* { return "10"; };
+        auto lambda3 = [] __device__ () -> const char* { return "10"; };
 
-            // CORRECT, lambda3 represents a device extended lambda with preserved return type
-            cuda::std::result_of<decltype(lambda3)()>::type xx2 = "abc";
-            static_assert(cuda::std::is_same_v<cuda::std::result_of<decltype(lambda3)()>::type, const char*>);
+        // CORRECT, lambda3 represents a device extended lambda with preserved return type
+        cuda::std::result_of<decltype(lambda3)()>::type xx2 = "abc";
+        static_assert(cuda::std::is_same_v<cuda::std::result_of<decltype(lambda3)()>::type, const char*>);
 
-            auto lambda4 = [] __device__ (char x) -> decltype(getRef(&x)) { return 0; };
-            // lambda4's return type is not preserved because it references the operator()'s
-            // parameter types in the trailing return type.
-            static_assert(!__nv_is_extended_device_lambda_with_preserved_return_type(decltype(lambda4)));
-        }
+        auto lambda4 = [] __device__ (char x) -> decltype(getRef(&x)) { return 0; };
+        // lambda4's return type is not preserved because it references the operator()'s
+        // parameter types in the trailing return type.
+        static_assert(!__nv_is_extended_device_lambda_with_preserved_return_type(decltype(lambda4)));
+    }
 
 
-    ```
+```
 
 15。对于仅扩展设备的 lambda：
 
@@ -2538,86 +2538,86 @@ The `nvcc` 标志 `--extended-lambda` 允许在 lambda 表达式中显式注释�
 
 16。例如，如果将扩展 lambda 作为 `__global__` 函数的参数从主机传递到设备代码，则 lambda 主体中捕获变量的任何表达式都必须保持不变，无论是否定义了 `__CUDA_ARCH__` 宏以及它具有什么值。出现此限制是因为 lambda 的闭包类布局取决于编译器在处理 lambda 表达式时遇到捕获的变量的顺序。如果设备和主机编译之间的闭包类布局不同，程序可能会错误执行。示例：
 
-    ```cuda
+```cuda
 
 
-        __device__ int result;
+    __device__ int result;
 
-        template <typename T>
-        __global__ void kernel(T in) { result = in(); }
+    template <typename T>
+    __global__ void kernel(T in) { result = in(); }
 
-        void foo(void) {
-            int x1 = 1;
-            // ERROR, "x1" is only captured when __CUDA_ARCH__ is defined.
-            auto lambda1 = [=] __host__ __device__ {
-        #ifdef __CUDA_ARCH__
-                return x1 + 1;
-        #else
-                return 10;
-        #endif
-            };
-            kernel<<<1, 1>>>(lambda1);
-        }
+    void foo(void) {
+        int x1 = 1;
+        // ERROR, "x1" is only captured when __CUDA_ARCH__ is defined.
+        auto lambda1 = [=] __host__ __device__ {
+    #ifdef __CUDA_ARCH__
+            return x1 + 1;
+    #else
+            return 10;
+    #endif
+        };
+        kernel<<<1, 1>>>(lambda1);
+    }
 
 
-    ```
+```
 
 17。如前所述，CUDA 编译器将发送到主机编译器的代码中的仅扩展设备 lambda 表达式替换为占位符类型实例。占位符类型在主机代码中没有定义指针到函数的转换运算符；但是，设备代码中提供了转换运算符。请注意，此限制不适用于主机设备扩展 lambda。例子：
 
-    ```cuda
+```cuda
 
 
-        template <typename T>
-        __global__ void kernel(T in) {
-            int (*fp)(double) = in;
-            fp(0); // CORRECT, conversion in device code is supported
-            auto lambda1 = [](double) { return 1; };
-        }
+    template <typename T>
+    __global__ void kernel(T in) {
+        int (*fp)(double) = in;
+        fp(0); // CORRECT, conversion in device code is supported
+        auto lambda1 = [](double) { return 1; };
+    }
 
-        void foo() {
-            auto lambda_device      = [] __device__ (double) { return 1; };
-            auto lambda_host_device = [] __host__ __device__ (double) { return 1; };
-            kernel<<<1, 1>>>(lambda_device);
-            kernel<<<1, 1>>>(lambda_host_device);
+    void foo() {
+        auto lambda_device      = [] __device__ (double) { return 1; };
+        auto lambda_host_device = [] __host__ __device__ (double) { return 1; };
+        kernel<<<1, 1>>>(lambda_device);
+        kernel<<<1, 1>>>(lambda_host_device);
 
-            // CORRECT, conversion for a __host__ __device__ lambda is supported in host code
-            int (*fp1)(double) = lambda_host_device;
+        // CORRECT, conversion for a __host__ __device__ lambda is supported in host code
+        int (*fp1)(double) = lambda_host_device;
 
-            // ERROR, conversion for a device lambda is not supported in host code
-            int (*fp2)(double) = lambda_device;
-        }
+        // ERROR, conversion for a device lambda is not supported in host code
+        int (*fp2)(double) = lambda_device;
+    }
 
 
-    ```
+```
 
 18. 如前所述，CUDA 编译器在发送到主机编译器的代码中用占位符类型实例替换扩展的仅设备或主机设备 lambda 表达式。该占位符类型可以定义 C++ 特殊成员函数，例如构造函数和析构函数。因此，对于 CUDA 前端编译器中的扩展 lambda 的闭包类型，某些标准 C++ 类型特征可能会与主机编译器中产生不同的结果。以下类型特征会受到影响： : `std::is_trivially_copyable`, `std::is_trivially_constructible`, `std::is_trivially_copy_constructible`, `std::is_trivially_move_constructible`, `std::is_trivially_destructible`。必须小心确保这些特征的结果不会在 `__global__`, `__device__`, `__constant__`, or `__managed__` 函数或变量模板的实例化中使用。示例：
 
-    ```cuda
+```cuda
 
 
-        #include <cstdio>
-        #include <type_traits>
+    #include <cstdio>
+    #include <type_traits>
 
-        template <bool b>
-        void __global__ kernel() { printf("hi"); }
+    template <bool b>
+    void __global__ kernel() { printf("hi"); }
 
-        template <typename T>
-        void kernel_launch() {
-            // ERROR, this kernel launch may fail, because CUDA frontend compiler and host compiler
-            //        may disagree on the result of std::is_trivially_copyable_v trait on the
-            //        closure type of the extended lambda
-            kernel<std::is_trivially_copyable_v<T>><<<1,1>>>();
-            cudaDeviceSynchronize();
-        }
+    template <typename T>
+    void kernel_launch() {
+        // ERROR, this kernel launch may fail, because CUDA frontend compiler and host compiler
+        //        may disagree on the result of std::is_trivially_copyable_v trait on the
+        //        closure type of the extended lambda
+        kernel<std::is_trivially_copyable_v<T>><<<1,1>>>();
+        cudaDeviceSynchronize();
+    }
 
-        int main() {
-            int  x       = 0;
-            auto lambda1 = [=] __host__ __device__ () { return x; };
-            kernel_launch<decltype(lambda1)>();
-        }
+    int main() {
+        int  x       = 0;
+        auto lambda1 = [=] __host__ __device__ () { return x; };
+        kernel_launch<decltype(lambda1)>();
+    }
 
 
-    ```
+```
 
  CUDA 编译器将为 `1-12` 中描述的部分情况生成编译器诊断信息；对于 `13-17` 情况，不会生成任何诊断信息，但主机编译器可能无法编译生成的代码。
 
@@ -3594,39 +3594,39 @@ A `__global__` or `__tile_global__` 函数具有以下内容限制：
 
  示例：
 
-    ```cuda
+```cuda
 
 
-        #include <cassert>
+    #include <cassert>
 
-        struct MyStruct {
-            int  value = 1;
-            int* ptr;
+    struct MyStruct {
+        int  value = 1;
+        int* ptr;
 
-            MyStruct() = default;
+        MyStruct() = default;
 
-            __host__ __device__ MyStruct(const MyStruct&) { ptr = &value; }
-        };
+        __host__ __device__ MyStruct(const MyStruct&) { ptr = &value; }
+    };
 
-        __global__ void device_function(MyStruct my_struct) {
-            // this assert fails because "my_struct" is obtained by copying
-            // the raw memory content and the copy constructor is skipped.
-            assert(my_struct.ptr == &my_struct.value); // FAIL
-        }
+    __global__ void device_function(MyStruct my_struct) {
+        // this assert fails because "my_struct" is obtained by copying
+        // the raw memory content and the copy constructor is skipped.
+        assert(my_struct.ptr == &my_struct.value); // FAIL
+    }
 
-        void host_function(MyStruct my_struct) {
-            assert(my_struct.ptr == &my_struct.value); // CORRECT
-        }
+    void host_function(MyStruct my_struct) {
+        assert(my_struct.ptr == &my_struct.value); // CORRECT
+    }
 
-        int main() {
-            MyStruct my_struct;
-            host_function(my_struct);
-            device_function<<<1, 1>>>(my_struct); // copy constructor invoked in the host-side only
-            cudaDeviceSynchronize();
-        }
+    int main() {
+        MyStruct my_struct;
+        host_function(my_struct);
+        device_function<<<1, 1>>>(my_struct); // copy constructor invoked in the host-side only
+        cudaDeviceSynchronize();
+    }
 
 
-    ```
+```
 
  请参阅 <a href="https://godbolt.org/z/xhqe16dec" class="reference external">Compiler Explorer</a>.
 
@@ -3636,32 +3636,32 @@ A `__global__` or `__tile_global__` 函数具有以下内容限制：
 
  示例：
 
-    ```cuda
+```cuda
 
 
-        #include <cassert>
+    #include <cassert>
 
-        __managed__ int var = 0;
+    __managed__ int var = 0;
 
-        struct MyStruct {
-            __host__ __device__ ~MyStruct() { var = 3; }
-        };
+    struct MyStruct {
+        __host__ __device__ ~MyStruct() { var = 3; }
+    };
 
-        __global__ void device_function(MyStruct my_struct) {
-            assert(var == 0); // FAIL, MyStruct::~MyStruct() sets the value to 3
-        }
+    __global__ void device_function(MyStruct my_struct) {
+        assert(var == 0); // FAIL, MyStruct::~MyStruct() sets the value to 3
+    }
 
-        int main() {
-            MyStruct my_struct;
-            // GPU kernel execution is asynchronous with host execution.
-            // As a result, MyStruct::~MyStruct() could be executed before
-            // the kernel finishes executing.
-            device_function<<<1, 1>>>(my_struct);
-            cudaDeviceSynchronize();
-        }
+    int main() {
+        MyStruct my_struct;
+        // GPU kernel execution is asynchronous with host execution.
+        // As a result, MyStruct::~MyStruct() could be executed before
+        // the kernel finishes executing.
+        device_function<<<1, 1>>>(my_struct);
+        cudaDeviceSynchronize();
+    }
 
 
-    ```
+```
 
  请参阅 <a href="https://godbolt.org/z/cn6Y5W6zs" class="reference external"> 编译器资源管理器中的示例</a>.
 
