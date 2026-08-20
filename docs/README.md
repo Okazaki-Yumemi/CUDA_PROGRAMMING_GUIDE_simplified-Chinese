@@ -26,19 +26,19 @@ features:
 ## 六个入口
 
 <div class="chapter-grid">
-  <div class="chapter-card"><span class="badge">Part 1</span><h3><a href="/chapters/01-introduction.html">CUDA 简介</a></h3><p>异构系统、GPU 硬件模型、线程层次、SIMT、内存与 CUDA 平台。</p></div>
-  <div class="chapter-card"><span class="badge">Part 2</span><h3><a href="/chapters/02-programming-gpus.html">用 CUDA 编程 GPU</a></h3><p>CUDA C++、CUDA Python、SIMT kernel、tile kernel、异步执行和 nvcc。</p></div>
-  <div class="chapter-card"><span class="badge">Part 3</span><h3><a href="/chapters/03-advanced-cuda.html">高级 CUDA</a></h3><p>高级 API、多 GPU、驱动 API，以及从功能角度浏览 CUDA。</p></div>
-  <div class="chapter-card"><span class="badge">Part 4</span><h3><a href="/chapters/04-cuda-features.html">CUDA 功能</a></h3><p>统一内存、CUDA Graphs、协作组、异步拷贝、虚拟内存等主题索引。</p></div>
-  <div class="chapter-card"><span class="badge">Part 5</span><h3><a href="/chapters/05-technical-appendices.html">技术附录</a></h3><p>Compute Capability、语言扩展、浮点计算、设备端 API 与内存模型。</p></div>
-  <div class="chapter-card"><span class="badge">Part 6</span><h3><a href="/chapters/06-notices.html">声明与商标</a></h3><p>Notice、OpenCL、Trademarks 等原文末尾信息的中文索引。</p></div>
+  <div class="chapter-card"><span class="badge">Part 1</span><h3><a href="/01-introduction/introduction.html">CUDA 简介</a></h3><p>异构系统、GPU 硬件模型、线程层次、SIMT、内存与 CUDA 平台。</p></div>
+  <div class="chapter-card"><span class="badge">Part 2</span><h3><a href="/02-programming-gpus/intro-to-cuda-cpp.html">用 CUDA 编程 GPU</a></h3><p>CUDA C++、CUDA Python、SIMT kernel、tile kernel、异步执行和 nvcc。</p></div>
+  <div class="chapter-card"><span class="badge">Part 3</span><h3><a href="/03-advanced-cuda/advanced-apis-and-features.html">高级 CUDA</a></h3><p>高级 API、多 GPU、驱动 API，以及从功能角度浏览 CUDA。</p></div>
+  <div class="chapter-card"><span class="badge">Part 4</span><h3><a href="/04-cuda-features/unified-memory.html">CUDA 功能</a></h3><p>统一内存、CUDA Graphs、协作组、异步拷贝、虚拟内存等主题索引。</p></div>
+  <div class="chapter-card"><span class="badge">Part 5</span><h3><a href="/05-technical-appendices/compute-capabilities.html">技术附录</a></h3><p>Compute Capability、语言扩展、浮点计算、设备端 API 与内存模型。</p></div>
+  <div class="chapter-card"><span class="badge">Part 6</span><h3><a href="/06-notices/notice.html">声明与商标</a></h3><p>Notice、OpenCL、Trademarks 等原文末尾信息的中文索引。</p></div>
 </div>
 
 ## 阅读建议
 
-1. 第一次接触 CUDA：先看[第一章：CUDA 简介](/chapters/01-introduction.html)，再看[第二章的 CUDA C++](/chapters/02-programming-gpus.html#2-1-cuda-c)。
+1. 第一次接触 CUDA：先看[1.1 Introduction](/01-introduction/introduction.html)，再看[2.1 CUDA C++](/02-programming-gpus/intro-to-cuda-cpp.html)。
 2. 想理解性能：重点看线程块调度、warp divergence、全局内存合并访问、共享内存 bank conflict 和占用率。
-3. 想查新功能：直接看[第四部分：CUDA 功能](/chapters/04-cuda-features.html)，每个条目都保留官方英文名，便于回到 NVIDIA 文档搜索。
+3. 想查新功能：直接看[第四部分：CUDA 功能](/04-cuda-features/unified-memory.html)，每个条目都保留官方英文名，便于回到 NVIDIA 文档搜索。
 4. 想确认图形含义：进入[PDF 图版](/figures.html)，图下说明会把“图上画了什么”和“写 CUDA 时意味着什么”分开写。
 
 ## 翻译约定

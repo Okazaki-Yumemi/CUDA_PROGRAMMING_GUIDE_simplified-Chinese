@@ -13,12 +13,12 @@ description: CUDA Programming Guide Release 13.3 的中文目录与阅读路径
 
 | 原文部分 | 中文入口 | 官方范围 | 本站内容 |
 | --- | --- | --- | --- |
-| 1. Introduction to CUDA | [第一部分：CUDA 简介](./chapters/01-introduction.html) | Introduction、Programming Model、The CUDA platform | 核心概念翻译、线程层次和关键图版 |
-| 2. Programming GPUs in CUDA | [第二部分：用 CUDA 编程 GPU](./chapters/02-programming-gpus.html) | CUDA C++、CUDA Python、SIMT、Tile、异步、内存、nvcc | 代码导读、编程模型的落地方式和性能注意事项 |
-| 3. Advanced CUDA | [第三部分：高级 CUDA](./chapters/03-advanced-cuda.html) | 高级 API、kernel、Driver API、多 GPU、CUDA 功能导览 | 高级主题的中文索引和使用场景 |
-| 4. CUDA Features | [第四部分：CUDA 功能](./chapters/04-cuda-features.html) | 20 个当前功能主题 | 每个主题的中文标题、作用和官方检索词 |
-| 5. Technical Appendices | [第五部分：技术附录](./chapters/05-technical-appendices.html) | Compute Capability、语言、浮点、设备端 API、模型 | 参考手册式的中文索引 |
-| 6. Notices | [第六部分：声明](./chapters/06-notices.html) | Notice、OpenCL、Trademarks | 中文说明与来源保留 |
+| 1. Introduction to CUDA | [第一部分：CUDA 简介](./01-introduction/introduction.html) | Introduction、Programming Model、The CUDA platform | 核心概念翻译、线程层次和关键图版 |
+| 2. Programming GPUs in CUDA | [第二部分：用 CUDA 编程 GPU](./02-programming-gpus/intro-to-cuda-cpp.html) | CUDA C++、CUDA Python、SIMT、Tile、异步、内存、nvcc | 代码导读、编程模型的落地方式和性能注意事项 |
+| 3. Advanced CUDA | [第三部分：高级 CUDA](./03-advanced-cuda/advanced-apis-and-features.html) | 高级 API、kernel、Driver API、多 GPU、CUDA 功能导览 | 高级主题的中文索引和使用场景 |
+| 4. CUDA Features | [第四部分：CUDA 功能](./04-cuda-features/unified-memory.html) | 20 个当前功能主题 | 每个主题的中文标题、作用和官方检索词 |
+| 5. Technical Appendices | [第五部分：技术附录](./05-technical-appendices/compute-capabilities.html) | Compute Capability、语言、浮点、设备端 API、模型 | 参考手册式的中文索引 |
+| 6. Notices | [第六部分：声明](./06-notices/notice.html) | Notice、OpenCL、Trademarks | 中文说明与来源保留 |
 
 ## 推荐路线
 
@@ -26,7 +26,7 @@ description: CUDA Programming Guide Release 13.3 的中文目录与阅读路径
 
 `异构系统 → grid/block/thread → warp/SIMT → global/shared/register → kernel launch → 同步与错误检查`
 
-先读第一部分中的[异构系统](./chapters/01-introduction.html#1-2-1-异构系统)、[线程块与网格](./chapters/01-introduction.html#1-2-2-1-线程块与网格)、[warp 与 SIMT](./chapters/01-introduction.html#1-2-2-2-warp-与-simt)，再看第二部分的 [CUDA C++ 最小向量加法](./chapters/02-programming-gpus.html#2-1-4-一个可运行的最小心智模型)。
+先读第一部分中的[编程模型](./01-introduction/programming-model.html)，再看第二部分的 [CUDA C++ 最小心智模型](./02-programming-gpus/intro-to-cuda-cpp.html)。
 
 ### B. 关注性能
 
@@ -36,7 +36,7 @@ description: CUDA Programming Guide Release 13.3 的中文目录与阅读路径
 
 ### C. 查版本敏感功能
 
-直接进入[CUDA 功能](./chapters/04-cuda-features.html)。每个条目都保留官方英文名称；页面中的“适用性提示”只做阅读导航，真正的 compute capability、驱动和 API 限制请以 NVIDIA 官方页面为准。
+直接进入[CUDA 功能](./04-cuda-features/unified-memory.html)。每个条目都保留官方英文名称；页面中的“适用性提示”只做阅读导航，真正的 compute capability、驱动和 API 限制请以 NVIDIA 官方页面为准。
 
 ## 中文稿状态
 
