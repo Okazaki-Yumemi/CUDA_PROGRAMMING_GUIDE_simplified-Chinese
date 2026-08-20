@@ -5,7 +5,7 @@ description: 用 CUDA C++、Python、SIMT、tile 和异步执行编程 GPU
 
 # 2. Programming GPUs in CUDA
 
-本部分按 NVIDIA 官方网页的七个分节拆开。建议先读 [2.1 Intro to CUDA C++](./intro-to-cuda-cpp.html)，再根据任务进入 Python、SIMT、tile、异步、内存或编译器页面。
+本部分按 NVIDIA 官方网页的七个分节拆开，页面内容以当前官方在线版为主，并保留原 PDF 图版页码。建议先读 [2.1 Intro to CUDA C++](./intro-to-cuda-cpp.html)，再根据任务进入 Python、SIMT、tile、异步、内存或编译器页面。
 
 <div class="chapter-grid">
   <div class="chapter-card"><h3><a href="./intro-to-cuda-cpp.html">2.1 Intro to CUDA C++</a></h3><p>nvcc、kernel、三尖括号启动、内建索引、内存和错误检查。</p></div>
@@ -17,4 +17,4 @@ description: 用 CUDA C++、Python、SIMT、tile 和异步执行编程 GPU
   <div class="chapter-card"><h3><a href="./nvcc.html">2.7 NVCC</a></h3><p>host/device 编译、架构代码生成、fatbin、调试和构建检查。</p></div>
 </div>
 
-完整的长篇中文导读仍保留在[第二部分总览](../chapters/02-programming-gpus.html)，本页结构与官方网页对齐，便于按分节阅读。
+第二部分七个分节均已建立对应的逐节中文译稿；本页结构与官方网页对齐，便于按分节阅读。旧版概念导读仍保留在[第二部分总览](../chapters/02-programming-gpus.html)，但以本页译稿为准。
