@@ -106,6 +106,16 @@ const navbar = [
   { text: '1.1 Introduction', link: '/01-introduction/introduction.html' },
   { text: 'PDF 图版', link: '/figures.html' },
   {
+    text: '项目标识',
+    children: [
+      {
+        text: '源代码仓库（GitHub）',
+        link: 'https://github.com/Okazaki-Yumemi/CUDA_PROGRAMMING_GUIDE_simplified-Chinese',
+      },
+      { text: 'CUDA Programming Guide Release 13.3', link: '/source.html' },
+    ],
+  },
+  {
     text: '官方资料',
     children: [
       {
