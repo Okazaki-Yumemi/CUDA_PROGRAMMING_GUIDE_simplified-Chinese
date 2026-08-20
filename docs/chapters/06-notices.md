@@ -1,23 +1,23 @@
 ---
-title: 第六部分：声明与商标
+title: 第六部分：声明（Notices）
 description: CUDA Programming Guide Notices 的中文索引
 ---
 
-# 第六部分：声明与商标
+# 第六部分：声明（Notices）
 
-> 原文部分：**6. Notices**。本页只做阅读索引和中文说明，不改写法律文本的效力。
+> 原文部分：**6. Notices**。本页列出 6.1–6.3 的中文译文入口；法律文本的效力以随软件发布的最新版英文原文为准。
 
-## 6.1 Notice：声明
+## 6.1 声明（Notice）
 
-原 guide 的 Notice 部分包含适用的法律、许可、免责声明和第三方材料说明。工程使用 CUDA Toolkit、NVIDIA SDK、样例代码或第三方库时，应分别阅读随软件发布的许可证和具体条款。
+包含 NVIDIA 产品和文档的免责声明、销售条款、知识产权许可和材料使用限制。详见[6.1 声明译文](../06-notices/notice.html)。
 
-## 6.2 OpenCL
+## 6.2 OpenCL 声明（OpenCL）
 
-OpenCL 相关名称、规范或兼容性说明属于其各自权利人。CUDA 与 OpenCL 可以在某些系统中共同出现，但它们是不同的编程平台和运行时模型；不要因为共享某些概念，就假定 kernel、内存或同步语义可以直接互换。
+OpenCL 是 Apple Inc. 的商标，经许可由 Khronos Group Inc. 使用。详见[6.2 OpenCL 译文](../06-notices/opencl.html)。
 
-## 6.3 Trademarks：商标
+## 6.3 商标（Trademarks）
 
-NVIDIA、CUDA、cuBLAS、cuFFT、cuDNN、CUTLASS、NVLink、PTX 等名称及其他产品名可能是 NVIDIA 或其他公司的商标。使用本文进行学习时应保留原名称和商标归属，不把本项目的中文页面误认为官方产品页面。
+NVIDIA 及 NVIDIA 徽标的商标归属，以及其他公司和产品名称的商标说明，见[6.3 商标译文](../06-notices/trademarks.html)。
 
 ## 版本与来源
 

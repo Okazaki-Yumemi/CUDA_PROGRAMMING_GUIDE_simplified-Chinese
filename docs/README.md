@@ -30,8 +30,8 @@ features:
   <div class="chapter-card"><span class="badge">Part 2</span><h3><a href="/02-programming-gpus/intro-to-cuda-cpp.html">用 CUDA 编程 GPU</a></h3><p>CUDA C++、CUDA Python、SIMT kernel、tile kernel、异步执行和 nvcc。</p></div>
   <div class="chapter-card"><span class="badge">Part 3</span><h3><a href="/03-advanced-cuda/advanced-apis-and-features.html">高级 CUDA</a></h3><p>高级 API、多 GPU、驱动 API，以及从功能角度浏览 CUDA。</p></div>
   <div class="chapter-card"><span class="badge">Part 4</span><h3><a href="/04-cuda-features/unified-memory.html">CUDA 功能</a></h3><p>统一内存、CUDA Graphs、协作组、异步拷贝、虚拟内存等主题索引。</p></div>
-  <div class="chapter-card"><span class="badge">Part 5</span><h3><a href="/05-technical-appendices/compute-capabilities.html">技术附录</a></h3><p>Compute Capability、语言扩展、浮点计算、设备端 API 与内存模型。</p></div>
-  <div class="chapter-card"><span class="badge">Part 6</span><h3><a href="/06-notices/notice.html">声明与商标</a></h3><p>Notice、OpenCL、Trademarks 等原文末尾信息的中文索引。</p></div>
+  <div class="chapter-card"><span class="badge">Part 5</span><h3><a href="/05-technical-appendices/compute-capabilities.html">技术附录</a></h3><p>5.1–5.8 的 Compute Capability、语言扩展、浮点计算、设备端 API 与内存模型完整译文。</p></div>
+  <div class="chapter-card"><span class="badge">Part 6</span><h3><a href="/06-notices/notice.html">声明与商标</a></h3><p>6.1–6.3 的 Notice、OpenCL、Trademarks 中文译文与法律版本边界。</p></div>
 </div>
 
 ## 阅读建议
