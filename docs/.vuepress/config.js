@@ -121,6 +121,7 @@ export default defineUserConfig({
   lang: 'zh-CN',
   title: 'CUDA 编程指南中文图解',
   description: '基于 NVIDIA CUDA Programming Guide Release 13.3 的中文翻译、概念导读与 PDF 图版说明',
+  base: '/CUDA_PROGRAMMING_GUIDE_simplified-Chinese/',
   head: [
     ['meta', { name: 'theme-color', content: '#76b900' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
