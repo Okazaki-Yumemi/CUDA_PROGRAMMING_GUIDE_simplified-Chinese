@@ -13,7 +13,7 @@ description: CUDA Programming Guide Release 13.3 的中文目录与阅读路径
 
 | 原文部分 | 中文入口 | 官方范围 | 本站内容 |
 | --- | --- | --- | --- |
-| 1. Introduction to CUDA | [第一部分：CUDA 简介](./01-introduction/introduction.html) | Introduction、Programming Model、The CUDA platform | 核心概念翻译、线程层次和关键图版 |
+| 1. Introduction to CUDA | [第一部分：CUDA 简介](./01-introduction/introduction.html) | Introduction、Programming Model、The CUDA platform | 1.1–1.3 已按官方网页逐段翻译，含图 1–10 与脚注 |
 | 2. Programming GPUs in CUDA | [第二部分：用 CUDA 编程 GPU](./02-programming-gpus/intro-to-cuda-cpp.html) | CUDA C++、CUDA Python、SIMT、Tile、异步、内存、nvcc | 代码导读、编程模型的落地方式和性能注意事项 |
 | 3. Advanced CUDA | [第三部分：高级 CUDA](./03-advanced-cuda/advanced-apis-and-features.html) | 高级 API、kernel、Driver API、多 GPU、CUDA 功能导览 | 高级主题的中文索引和使用场景 |
 | 4. CUDA Features | [第四部分：CUDA 功能](./04-cuda-features/unified-memory.html) | 20 个当前功能主题 | 每个主题的中文标题、作用和官方检索词 |
@@ -42,11 +42,11 @@ description: CUDA Programming Guide Release 13.3 的中文目录与阅读路径
 
 <div class="status-grid">
   <div class="status-card"><h3>结构</h3><p>按官方 6 个顶层部分和在线目录的主要分节建立导航。</p></div>
-  <div class="status-card"><h3>核心正文</h3><p>第一部分与第二部分的核心概念、示例和性能心智模型已写入中文稿。</p></div>
-  <div class="status-card"><h3>图版</h3><p>选取原 PDF 中的代表性图版，保留 PDF 页码并附中文解释。</p></div>
+  <div class="status-card"><h3>逐段翻译</h3><p>第一部分 1.1–1.3 已与官方网页逐段核对；第二至第六部分按章节继续推进。</p></div>
+  <div class="status-card"><h3>图版</h3><p>原 PDF 图 1–10 已保留页码并附中文解释，章节正文同时使用官方图示资源。</p></div>
   <div class="status-card"><h3>版本核对</h3><p>保留 Release 13.3 和官方在线目录入口，方便发现后续版本差异。</p></div>
 </div>
 
 <div class="translation-note">
-  <strong>阅读边界：</strong>这是一个持续扩展的中文学习站，不把摘要冒充逐句翻译。代码标识符、API 名称、公式和版本限制尽量保持原文；涉及生产环境或新硬件时，请将本文与官方文档并读。
+  <strong>阅读边界：</strong>第一部分已完成逐段翻译，其余部分仍按章节推进；未完成页面不会把摘要标成全文翻译。代码标识符、API 名称、公式和版本限制尽量保持原文；涉及生产环境或新硬件时，请将本文与官方文档并读。
 </div>
