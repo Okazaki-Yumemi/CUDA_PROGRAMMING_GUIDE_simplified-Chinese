@@ -11,7 +11,7 @@ description: 完整翻译 NVIDIA CUDA Programming Guide 第 2.3 节 SIMT kernel 
 
 ## 2.3.1 SIMT 基础（Basics of SIMT）
 
-从开发者的角度看，CUDA thread 是并行性的基本单位。[1.2.2.2 节](../01-introduction/programming-model.html#编程模型中的-warp与-simt)介绍了 GPU 执行的基本 SIMT 模型，[SIMT 执行模型](../03-advanced/advanced-kernel-programming.html#advanced-kernels-hardware-implementation-simt-architecture)则提供了更多细节。SIMT 模型允许每个线程维护自己的状态和控制流。从功能上说，每个线程都可以执行单独的代码路径。然而，如果注意尽量减少同一个 warp 中的线程采取分歧代码路径的情况，就可以获得显著的性能提升。
+从开发者的角度看，CUDA thread 是并行性的基本单位。[1.2.2.2 节](../01-introduction/programming-model.html#编程模型中的-warp与-simt)介绍了 GPU 执行的基本 SIMT 模型，[SIMT 执行模型](../03-advanced-cuda/advanced-kernel-programming.html#3221-simt-执行模型-simt-execution-model)则提供了更多细节。SIMT 模型允许每个线程维护自己的状态和控制流。从功能上说，每个线程都可以执行单独的代码路径。然而，如果注意尽量减少同一个 warp 中的线程采取分歧代码路径的情况，就可以获得显著的性能提升。
 
 ## 2.3.2 线程层次结构（Thread Hierarchy）
 
@@ -31,7 +31,7 @@ description: 完整翻译 NVIDIA CUDA Programming Guide 第 2.3 节 SIMT kernel 
 - `cuda.blockIdx.[xyz]`：分别表示 block 在 `x`、`y`、`z` 维度上的索引。这些值对于不同线程可能不同，用于指示当前正在执行的是哪个 thread block。
 - `cuda.gridDim.[xyz]`：分别表示线程在 `x`、`y`、`z` 维度上的索引。这些值对于不同线程不同，用于指示当前正在执行的是哪个线程。
 
-使用多维 thread block 和 grid 只是为了方便，并不会影响性能。一个 block 中的线程会以可预测的方式线性化：第一个索引 `x` 变化最快，其次是 `y`，最后是 `z`。这意味着在线程索引的线性化结果中，连续的 `threadIdx.x` 值表示连续的线程，`threadIdx.y` 的步长是 `blockDim.x`，`threadIdx.z` 的步长是 `blockDim.x * blockDim.y`。这会影响线程如何分配给 warp，详见[硬件多线程](../03-advanced/advanced-kernel-programming.html#advanced-kernels-hardware-implementation-hardware-multithreading)。
+使用多维 thread block 和 grid 只是为了方便，并不会影响性能。一个 block 中的线程会以可预测的方式线性化：第一个索引 `x` 变化最快，其次是 `y`，最后是 `z`。这意味着在线程索引的线性化结果中，连续的 `threadIdx.x` 值表示连续的线程，`threadIdx.y` 的步长是 `blockDim.x`，`threadIdx.z` 的步长是 `blockDim.x * blockDim.y`。这会影响线程如何分配给 warp，详见[硬件多线程](../03-advanced-cuda/advanced-kernel-programming.html#3222-硬件多线程-hardware-multithreading)。
 
 下图展示了一个简单的二维 grid 示例，其中 thread block 是一维的。
 
@@ -309,7 +309,7 @@ L2 cache 位于 device 上，由所有 SM 共享。可以通过 `cudaGetDevicePr
 
 如上面的 [Shared Memory](#2332-shared-memory) 小节所述，L1 cache 物理上位于每个 SM 上，并且与 shared memory 使用同一物理空间。如果 kernel 不使用 shared memory，那么整个物理空间都会由 L1 cache 使用。
 
-可以通过相关函数控制 L2 和 L1 cache，让开发者指定各种 cache 行为。这些函数的细节见[配置 L1/Shared Memory 平衡](../03-advanced/advanced-kernel-programming.html#advanced-kernels-l1-shared-config)、[L2 Cache 控制](../04-cuda-features/l2-cache-control.html#advanced-kernels-l2-control)和[低级 Load/Store 函数](../05-technical-appendices/cpp-language-extensions.html#low-level-load-store-functions)。
+可以通过相关函数控制 L2 和 L1 cache，让开发者指定各种 cache 行为。这些函数的细节见[配置 L1/Shared Memory 平衡](../03-advanced-cuda/advanced-kernel-programming.html)、[L2 Cache 控制](../04-cuda-features/l2-cache-control.html#advanced-kernels-l2-control)和[低级 Load/Store 函数](../05-technical-appendices/cpp-language-extensions.html#low-level-load-store-functions)。
 
 如果不使用这些提示，编译器和 runtime 会尽力高效地利用 cache。
 
@@ -734,7 +734,7 @@ smemArray = cuda.shared.array(shape=(32, 32 + 1), dtype=np.float32)
 
 ### 2.3.5.1 类似 C++ `std::atomic` 的 Atomic（C++ std::atomic-like Atomics）
 
-在 C++ 中，CUDA 为名称相近的 C++ 标准库 atomic 提供了类似的语法和行为，包括 `cuda::std::atomic` 和 `cuda::std::atomic_ref`。CUDA 还提供扩展 C++ atomic：`cuda::atomic` 和 `cuda::atomic_ref`，允许用户指定 atomic 操作的[线程作用域](../03-advanced/advanced-kernel-programming.html#advanced-kernels-thread-scopes)。Atomic function 的细节见[Atomic Function](../05-technical-appendices/cpp-language-extensions.html#atomic-functions)。
+在 C++ 中，CUDA 为名称相近的 C++ 标准库 atomic 提供了类似的语法和行为，包括 `cuda::std::atomic` 和 `cuda::std::atomic_ref`。CUDA 还提供扩展 C++ atomic：`cuda::atomic` 和 `cuda::atomic_ref`，允许用户指定 atomic 操作的[线程作用域](../03-advanced-cuda/advanced-kernel-programming.html#323-线程作用域-thread-scopes)。Atomic function 的细节见[Atomic Function](../05-technical-appendices/cpp-language-extensions.html#atomic-functions)。
 
 下面是使用 `cuda::atomic_ref` 执行 device-wide atomic 加法的示例。这里 `array` 是 float 数组，`result` 是一个指向 global memory 位置的 float pointer，该位置用于保存数组元素之和。
 

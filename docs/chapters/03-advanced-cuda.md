@@ -7,6 +7,8 @@ description: 高级 CUDA API、kernel 编程、Driver API、多 GPU 与功能导
 
 > 原文部分：**3. Advanced CUDA**。这一部分更像从“能写 kernel”走向“设计可扩展 CUDA 系统”的导航，很多内容会在第四部分和技术附录中展开。
 
+本部分的 3.1–3.5 已完成按 NVIDIA 官方网页的逐节中文翻译：可从[3.1 高级 CUDA API](../03-advanced-cuda/advanced-apis-and-features.html)开始，也可以直接进入[3.2 高级 Kernel 编程](../03-advanced-cuda/advanced-kernel-programming.html)、[3.3 Driver API](../03-advanced-cuda/driver-api.html)、[3.4 多 GPU](../03-advanced-cuda/multiple-gpus.html)或[3.5 CUDA 功能概览](../03-advanced-cuda/tour-of-cuda-features.html)。
+
 ## 3.1 高级 CUDA API 与功能
 
 高级 API 主题通常围绕四类问题展开：如何减少提交开销，如何让多个线程/线程块安全协作，如何管理更复杂的内存与执行资源，以及如何把异步工作组织成可复用的图。

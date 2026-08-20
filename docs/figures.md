@@ -37,8 +37,14 @@ description: CUDA Programming Guide Release 13.3 代表性图版的中文解释
   <div class="figure-card" id="图-18-带-padding-的共享内存"><h3>图 18：32 x 33 共享内存数组</h3><img src="/figures/page-084.png" alt="PDF 第 84 页，图 18" /><p><strong>PDF p.84。</strong>在 32 x 32 转置缓冲区旁增加一列 padding，让相邻行落到不同 bank 的模式发生变化。<strong>编程含义：</strong>一个常见的消除 bank conflict 技巧是改变 tile 的 leading dimension，而不是修改算法结果。</p></div>
   <div class="figure-card" id="图-19-tile-space索引"><h3>图 19：Partition View 的 Tile-Space 索引</h3><img src="/figures/page-095.png" alt="PDF 第 95 页，图 19" /><p><strong>PDF p.95。</strong>一个 10 x 16 array 被划分为 2 x 4 tile，形成 5 x 4 tile grid；每个 tile-space 坐标对应 array 中的一个规则区域。<strong>编程含义：</strong>view 将 block 索引转换为可预测的区域 load/store，边界 tile 需要额外的 padding 或 mask 规则。</p></div>
   <div class="figure-card" id="图-20-cuda-stream异步并发"><h3>图 20：使用 CUDA Stream 的异步并发执行</h3><img src="/figures/page-118.png" alt="PDF 第 118 页，图 20" /><p><strong>PDF p.118。</strong>不同 stream 中的 kernel、内存复制和 host 工作可以在时间线上重叠，而同一 stream 内仍保持顺序。<strong>编程含义：</strong>异步并发依赖独立 stream、硬件 copy engine 和正确的同步点；看到 API 返回并不等于 GPU 工作已完成。</p></div>
-  <div class="figure-card" id="图-21-统一内存范式"><h3>图 21：统一内存范式</h3><img src="/figures/page-134.png" alt="PDF 第 134 页，图 21" /><p><strong>PDF p.134。</strong>流程从 unified virtual address space 开始，再依据 `cudaDevAttrConcurrentManagedAccess`、`cudaDevAttrPageableMemoryAccess` 和页表属性判断统一内存支持程度。<strong>编程含义：</strong>统一地址空间不等于所有 host memory 都能无条件按 unified memory 使用，应用必须查询 device 属性并选择迁移、预取或显式复制策略。</p></div>
-  <div class="figure-card" id="图-22-warp-的划分"><h3>图 22：线程块被划分为 warp</h3><img src="/figures/page-165.png" alt="PDF p.165，图 22" /><p><strong>PDF p.165。</strong>线程块按每组 32 个线程划分为 warp。<strong>编程含义：</strong>线程块总数不是必须为 32 的倍数，但这样可以避免最后一个 warp 中出现长期闲置的 lane，并有助于获得更稳定的执行效率。</p></div>
+</div>
+
+## 第三部分：高级 CUDA
+
+<div class="figure-grid">
+  <div class="figure-card" id="图-22-warp-的划分"><h3>图 22：线程块被划分为 warp</h3><img src="/figures/page-165.png" alt="PDF 第 165 页，图 22" /><p><strong>PDF p.165。</strong>线程块按每组 32 个线程划分为 warp。<strong>编程含义：</strong>线程块总数不是必须为 32 的倍数，但这样可以避免最后一个 warp 中出现长期闲置的 lane，并有助于获得更稳定的执行效率。</p></div>
+  <div class="figure-card" id="图-23-库上下文管理"><h3>图 23：库上下文管理</h3><img src="/figures/page-183.png" alt="PDF 第 183 页，图 23" /><p><strong>PDF p.183。</strong>库初始化时创建 context，完成初始化后将 context 从 host thread 弹出；后续库调用再 push 该 context，完成工作后再次 pop。<strong>编程含义：</strong>Driver API 的 context 是 host thread 的当前状态栈，库应正确管理 push/pop 和 usage count，避免覆盖调用方的 context 或过早销毁共享资源。</p></div>
+  <div class="figure-card" id="pdl-程序化依赖-kernel-launch"><h3>程序化依赖 Kernel Launch（PDL）示意图</h3><img src="/figures/page-156.png" alt="PDF 第 156 页，3.1.4 PDL 示意图" /><p><strong>PDF p.156。</strong>图中对比不使用 PDL 时 primary kernel 与 dependent kernel 的串行时间线，以及使用 PDL 后 primary kernel 发出完成通知、dependent kernel 在需要数据的位置等待的时间线。<strong>编程含义：</strong>PDL 允许 dependent kernel 的独立前置工作与 primary kernel 的后续工作重叠，但仍需正确设置 `cudaLaunchAttributeProgrammaticStreamSerialization` 和依赖同步函数。</p></div>
 </div>
 
 ## 第四部分：新功能图版

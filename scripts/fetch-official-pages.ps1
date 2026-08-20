@@ -16,6 +16,11 @@ $pages = [ordered]@{
   '02-basics/asynchronous-execution.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html'
   '02-basics/understanding-memory.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/understanding-memory.html'
   '02-basics/nvcc.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/nvcc.html'
+  '03-advanced/advanced-host-programming.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/advanced-host-programming.html'
+  '03-advanced/advanced-kernel-programming.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/advanced-kernel-programming.html'
+  '03-advanced/driver-api.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/driver-api.html'
+  '03-advanced/multi-gpu-systems.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/multi-gpu-systems.html'
+  '03-advanced/feature-survey.html' = 'https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/feature-survey.html'
 }
 
 foreach ($page in $pages.GetEnumerator()) {
